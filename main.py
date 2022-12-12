@@ -2,24 +2,23 @@ from datetime import datetime, timedelta
 
 
 def get_birthdays_per_week(birthday_list):
-    """Gets list of dicts with name and birthday as keys and returns date of the week to congratulate a person"""
+    """Gets list of dicts with name and birthday as keys and returns day of the week to congratulate a person"""
     today = datetime.now()
     end = today + timedelta(days=7)
     to_greet = {}
     for person in birthday_list:
         a_date = datetime.strptime(person['birthday'], "%d/%m/%Y")  # datetime object
-        if today.strftime("%d/%m") <= a_date.strftime("%d/%m") <= end.strftime("%d/%m"):
-            weekday_name = a_date.strftime("%A")  # name of the weekday
-            number_of_weekday = a_date.isoweekday()  # number of day in the week
+        b_date = datetime(day=a_date.day, month=a_date.month, year=datetime.now().year)
+        if today.strftime("%d/%m") <= b_date.strftime("%d/%m") <= end.strftime("%d/%m"):
+            weekday_name = b_date.strftime("%A")  # name of the weekday
+            number_of_weekday = b_date.isoweekday()  # number of day in the week
 
             if number_of_weekday > 5:
                 weekday_name = 'Monday'
 
             to_greet[person['name']] = weekday_name
 
-    present_week_days = []
-    for days in to_greet.values():
-        present_week_days.append(days)
+    present_week_days = [day for day in to_greet.values()]
     unique_week_days = set(present_week_days)
 
     full_dict = {}
